@@ -7,13 +7,11 @@ const util = require('util');
 const plugin = require('ih-plugin-api')();
 const app = require('./app');
 
-init();
-
-async function init() {
+(async () => {
   plugin.log('HTTP client has started.', 0);
 
   try {
-    // Получить каналы 
+    // Получить каналы
     plugin.channels = await plugin.channels.get();
     plugin.log('Received channels...');
 
@@ -25,4 +23,4 @@ async function init() {
   } catch (err) {
     plugin.exit(8, `Error: ${util.inspect(err)}`);
   }
-};
+})();

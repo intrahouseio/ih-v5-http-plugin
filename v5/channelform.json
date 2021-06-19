@@ -1,9 +1,7 @@
 {
   "grid": [
 
-    { "id": "p2", "xs": 12, "class": "main", "table": "devhard" },
-
-    { "id": "p9", "xs": 12, "class": "main", "table": "onechannelrtTable" }
+    { "id": "p2", "xs": 12, "class": "main", "table": "devhard" }
   ],
   "spacing": 4,
 
@@ -129,9 +127,5 @@
     },
     { "prop": "updatestate", "title": "$Updatestate", "default": 0, "type": "cb", "hide": "!data.p2.w", "inAction":1 }
    
-  ],
-  "p9": [
-    { "prop": "realtime_chan_str", "title": "Канал", "type": "text" },
-    { "prop": "realtime_dev_str", "title": "Устройство", "type": "text" }
   ]
 }
