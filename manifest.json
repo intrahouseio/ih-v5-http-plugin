@@ -1,0 +1,71 @@
+{
+  "description": "HTTP plugin",
+  "smart": 1,
+  "restartOnChannelsChange": 1,
+ 
+  "channel_popup": {
+    "add":[
+    { "id": "channel_read", "title": "$ChannelRead" },
+    { "id": "channel_write", "title": "$ChannelWrite" }
+    ],
+    "copypaste":true,
+    "delete":true
+  },
+
+  "channel_folder_popup": {
+    "add":[
+    { "id": "channel_folder", "title": "$NewRequest" },
+    { "id": "channel_read", "title": "$ChannelRead" },
+    { "id": "channel_write", "title": "$ChannelWrite" }
+    ],
+    "copypaste":true,
+    "delete":true
+  },
+
+  "default_channel_folder": {
+    "r":1,
+    "chan":"$NewRequest",
+    "url": "http://localhost:8081",
+    "type": "get",
+    "interval": 60,
+    "statusCode": 200,
+    "headers": "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
+    "headerCL": false,
+    "body": "username=admin&password=1234",
+    "reqAuth": false,
+    "reqAuthUrl": "http://localhost:8081/login",
+    "reqAuthType": "post",
+    "reqAuthHeaders": "Content-Type: application/x-www-form-urlencoded\r\nAccept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
+    "reqAuthBody": "username=admin&password=1234",
+    "reqAuthInheritCookies": true,
+    "reqAuthInheritQuery": false,
+    "reqAuthEverytime": false
+  },
+  
+  "default_channel_read": {
+    "r":1,
+    "chan": "ch_1",
+    "parseType": "json",
+    "json": "data.value",
+    "regexp": "<div\\b[^>]*>(.*?)</div>",
+    "regexptest": "[a-z0-9]",
+    "valueTrue": "1",
+    "valueFalse": "null",
+    "flag": "gm",
+    "rescount": 1,
+    "number": true
+  },
+
+  "default_channel_write": {
+    "w":1,
+    "chan": "cw_1",
+    "act": "on",
+    "url": "http://localhost:8081",
+    "type": "get",
+    "statusCode": 200,
+    "headers": "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
+    "body": "username=admin&password=1234",
+    "headerCL": false,
+    "updatestate": false
+  }
+}

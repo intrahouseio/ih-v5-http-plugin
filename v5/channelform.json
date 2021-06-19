@@ -1,0 +1,137 @@
+{
+  "grid": [
+
+    { "id": "p2", "xs": 12, "class": "main", "table": "devhard" },
+
+    { "id": "p9", "xs": 12, "class": "main", "table": "onechannelrtTable" }
+  ],
+  "spacing": 4,
+
+  "p2": [
+    { "prop": "chan", "title": "$Channel", "type": "input" },
+    { "prop": "devpropname", "title": "$Devpropname", "type": "input" },
+ 
+    { "prop": "r", "title": "Чтение", "type": "cb", "hide":"1==1" },
+    { "prop": "w", "title": "Запись", "type": "cb", "hide":"1==1" },
+    {
+      "prop": "parseType",
+      "title": "$Parser",
+      "type": "droplist",
+      "hide": "!data.p2.r",
+      "data": [
+        { "id": "json", "title": "JSON" },
+        { "id": "text", "title": "TEXT GET" },
+        { "id": "search", "title": "TEXT SEARCH" }
+      ]
+    },
+    {
+      "prop": "json",
+      "title": "$Json",
+      "type": "input",
+      "default": "data.value",
+      "hide": "!data.p2.r || data.p2.parseType.id != 'json'"
+    },
+    {
+      "prop": "regexp",
+      "title": "$Regexp",
+
+      "type": "input",
+      "default": "<div\\b[^>]*>(.*?)</div>",
+     
+      "hide": "!data.p2.r || data.p2.parseType.id != 'text'"
+    },
+    {
+      "prop": "regexptest",
+      "title": "$Regexptest",
+      "type": "input",
+      "default": "[a-z0-9]",
+      "hide": "!data.p2.r || data.p2.parseType.id != 'search'"
+    },
+    {
+      "prop": "flag",
+      "title": "$Flag",
+      "type": "input",
+      "default": "gm",
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || (data.p2.parseType !== 'text' && data.p2.parseType !== 'search') || data.p2.regexp == ''"
+    },
+    {
+      "prop": "rescount",
+      "title": "$Rescount",
+      "type": "number",
+      "default": 1,
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'text'|| data.p2.regexp === ''"
+    },
+    {
+      "prop": "valueTrue",
+      "title": "$ValueTrue",
+      "type": "input",
+      "default": "1",
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'search'"
+    },
+    {
+      "prop": "valueFalse",
+      "title": "$ValueFalse",
+      "type": "input",
+      "default": "null",
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'search'"
+    },
+    { "prop": "number", "title": "$Number", "type": "cb", "hide": "!data.p2.r", "default": 1 },
+    { "prop": "calc", "title": "Формула извлечения значения", "type": "input", "hide":"!data.p2.r"},
+
+   
+    { "prop": "act", "title": "Команда", "type": "input", "hide": "!data.p2.w" },
+    { "prop": "url", "title": "$Url", "default": "http://127.0.0.1:8081", "type": "input", "hide": "!data.p2.w", "inAction":1 },
+    {
+      "prop": "type",
+      "title": "$Type",
+      "default": 1,
+      "type": "droplist",
+      "hide": "!data.p2.w",
+      "inAction":1,
+      "data": [
+        { "id": "get", "title": "GET" },
+        { "id": "post", "title": "POST" },
+        { "id": "put", "title": "PUT" },
+        { "id": "delete", "title": "DELETE" },
+        { "id": "patch", "title": "PATCH" },
+        { "id": "head", "title": "HEAD" },
+        { "id": "connect", "title": "CONNECT" },
+        { "id": "options", "title": "OPTIONS" },
+        { "id": "trace", "title": "TRACE" }
+      ]
+    },
+    { "prop": "statusCode", "title": "$StatusCode", "default": 200, "type": "number", "hide": "!data.p2.w", "inAction":1 },
+    {
+      "prop": "headers",
+      "title": "$Headers",
+      "default": "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
+      "type": "textarea",
+      "hide": "!data.p2.w",
+      "inAction":1
+    },
+    {
+      "prop": "body",
+      "title": "$Body",
+      "default": "username=admin&password=1234",
+      "type": "textarea",
+
+      "hide": "!data.p2.w || data.p2.type.id === 'get'  || data.p2.type.id === 'head'",
+      "inAction":1
+    },
+    { "prop": "calc_out", "title": "Формула для отправки значения", "type": "input", "hide":"!data.p2.w" },
+    {
+      "prop": "headerCL",
+      "title": "$HeaderCL",
+      "default": 0,
+      "type": "cb",
+      "inAction":1,
+      "hide": "!data.p2.w || data.p2.type.id === 'get'  || data.p2.type.id === 'head'"
+    },
+    { "prop": "updatestate", "title": "$Updatestate", "default": 0, "type": "cb", "hide": "!data.p2.w", "inAction":1 }
+   
+  ],
+  "p9": [
+    { "prop": "realtime_chan_str", "title": "Канал", "type": "text" },
+    { "prop": "realtime_dev_str", "title": "Устройство", "type": "text" }
+  ]
+}

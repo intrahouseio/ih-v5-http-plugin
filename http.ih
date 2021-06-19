@@ -1,0 +1,6 @@
+{
+    "id":"http",
+    "description":"HTTP plugin",
+    "cross": true,
+    "version":"5.5.0"
+}

@@ -1,0 +1,86 @@
+{
+  "grid": [{ "id": "p2", "xs": 12, "class": "main", "table": "devhard" }],
+  "spacing": 4,
+
+  "p2": [
+    { "prop": "chan", "title": "$Name", "type": "input"},
+    { "prop": "txt", "title": "$Comment", "type": "input" },
+    { "prop": "r", "title": "", "type": "cb", "hide":"1==1" },
+    { "prop": "url", "title": "$Url", "type": "input", "hide":"!data.p2.r"},
+    {
+      "prop": "type",
+      "title": "$Type",
+      "type": "droplist",
+      "hide":"!data.p2.r",
+      "data": [
+        { "id": "get", "title": "GET" },
+        { "id": "post", "title": "POST" },
+        { "id": "put", "title": "PUT" },
+        { "id": "delete", "title": "DELETE" },
+        { "id": "patch", "title": "PATCH" },
+        { "id": "head", "title": "HEAD" },
+        { "id": "connect", "title": "CONNECT" },
+        { "id": "options", "title": "OPTIONS" },
+        { "id": "trace", "title": "TRACE" }
+      ]
+    },
+    { "prop": "interval", "title": "$Interval", "type": "number", "hide":"!data.p2.r" },
+    { "prop": "statusCode", "title": "$StatusCode",   "type": "number", "hide":"!data.p2.r" },
+    {
+      "prop": "headers",
+      "title": "$Headers",
+      "type": "textarea",
+      "hide":"!data.p2.r"
+    },
+    {
+      "prop": "body",
+      "title": "$Body",
+      "type": "textarea",
+      "hide": "!data.p2.type.id || data.p2.type.id === 'get' || data.p2.type.id === 'head'"
+    },
+
+    { "prop": "reqAuth", "title": "$ReqAuthtext", "type": "cb",   "hide": "!data.p2.r" },
+    {
+      "prop": "reqAuthUrl",
+      "title": "$Url",
+      "type": "input",
+      "hide": "!data.p2.reqAuth"
+    },
+    {
+      "prop": "reqAuthType",
+      "title": "$Type",
+      "type": "droplist",
+      "hide": "!data.p2.reqAuth",
+      "data": [
+        { "id": "get", "title": "GET" },
+        { "id": "post", "title": "POST" },
+        { "id": "put", "title": "PUT" },
+        { "id": "delete", "title": "DELETE" },
+        { "id": "patch", "title": "PATCH" },
+        { "id": "head", "title": "HEAD" },
+        { "id": "connect", "title": "CONNECT" },
+        { "id": "options", "title": "OPTIONS" },
+        { "id": "trace", "title": "TRACE" }
+      ]
+    },
+    { "prop": "reqAuthStatusCode", "title": "$StatusCode",  "type": "number", "hide": "!data.p2.reqAuth" },
+    {
+      "prop": "reqAuthHeaders",
+      "title": "$Headers",
+      "type": "textarea",
+      "hide": "!data.p2.reqAuthh"
+    },
+    {
+      "prop": "reqAuthBody",
+      "title": "$Body",
+      "hide": "!data.p2.reqAuth || !data.p2.reqAuthType.id || data.p2.reqAuthType.id === 'get' || data.p2.reqAuthType.id === 'head'",
+      "type": "textarea"
+    },
+    {
+      "prop": "reqAuthEverytime",
+      "title": "$ReqAuthEverytime",
+      "type": "cb",
+      "hide": "!data.p2.reqAuth"
+    }
+  ]
+}
