@@ -2,7 +2,7 @@
  *
  */
 
-// const util = require('util');
+const util = require('util');
 const request = require('request');
 
 const STORE = {
@@ -13,7 +13,7 @@ module.exports = async function(plugin) {
   start();
 
   function start() {
-    STORE.tasks = prepareTasks(plugin.channels);
+    STORE.tasks = prepareTasks(plugin.channels.data);
     STORE.actions = prepareActions(STORE.tasks);
     STORE.tasks.forEach(worker);
   }
@@ -101,14 +101,14 @@ module.exports = async function(plugin) {
 
   function prepareActions(data) {
     const actions = {};
+
     data.forEach((r, key) => {
       r.values.forEach(c => {
-        if (c.actions) {
-          actions[c.dn] = {};
-          c.actions.forEach(a => {
-            a.task = key;
-            actions[c.dn][a.act] = prepareParent(a);
-          });
+        if (c.w) {
+          if (!actions[c.dn]) actions[c.dn] = {};
+
+          // a.task = key;
+          actions[c.dn][c.act] = prepareParent({ ...c, task: key });
         }
       });
     });
@@ -266,7 +266,7 @@ module.exports = async function(plugin) {
             }
           })
       )
-      .catch(e => plugin.sendData(this.values.map(item => ({ dn: item.dn, err: e.message }))));
+      .catch(e => plugin.sendData(this.values.filter(item => item.r).map(item => ({ dn: item.dn, err: e.message }))));
   }
 
   function worker(item) {
@@ -276,7 +276,9 @@ module.exports = async function(plugin) {
     _task();
   }
 
+  /*
   function deviceAction(device) {
+   
     if (STORE.actions[device.dn] && STORE.actions[device.dn][device.prop]) {
       const action = STORE.actions[device.dn][device.prop];
       if (device.prop === 'set') {
@@ -297,17 +299,48 @@ module.exports = async function(plugin) {
             task.bind(STORE.tasks[action.task]).call();
           } else if (device.prop === 'set') {
             plugin.sendData([{ dn: device.dn, value: device.val }]);
-          } else {
-            plugin.sendData([{ dn: device.dn, value: device.prop === 'on' ? 1 : 0 }]);
+          } 
+          // else {
+          //  plugin.sendData([{ dn: device.dn, value: device.prop === 'on' ? 1 : 0 }]);
+          // }
+        })
+        .catch(e => plugin.sendData([{ dn: device.dn, err: e.message }]));
+    }
+  }
+  */
+
+  function deviceAction(device) {
+    if (STORE.actions[device.dn] && STORE.actions[device.dn][device.prop]) {
+      const action = STORE.actions[device.dn][device.prop];
+      if (!action.url) {
+        plugin.log('Empty action url!');
+        return;
+      }
+
+      const url = action.url.indexOf('${value}') > 0 ? action.url.replace(/\${value}/gim, device.val) : action.url;
+      plugin.log(url);
+      let body;
+      if (action.body) {
+        body = action.body.indexOf('${value}') > 0 ? action.body.replace(/\${value}/gim, device.val) : action.body;
+      }
+
+      req(Object.assign({}, action, { url, body }))
+        .then(res => {
+          if (action.updatestate) {
+            task.bind(STORE.tasks[action.task]).call();
+          } else if (device.prop === 'set') {
+            plugin.sendData([{ dn: device.dn, value: device.val }]);
           }
         })
         .catch(e => plugin.sendData([{ dn: device.dn, err: e.message }]));
     }
   }
 
-  plugin.on('act', data => {
-    if (!data) return;
-    data.forEach(item => deviceAction(item));
+  plugin.onAct(message => {
+    plugin.log('Action request: ' + util.inspect(message));
+    if (!message.data) return;
+
+    message.data.forEach(item => deviceAction(item));
   });
 
   plugin.on('command', command => {
@@ -326,7 +359,7 @@ module.exports = async function(plugin) {
       } else {
         const error_text = error
           ? error.message
-          : `Response status code no match, ${statusCode} != ${response.statusCode}`;
+          : `Response status code no match, ${response.statusCode} != ${response.statusCode}`;
         plugin.log(`${type.toUpperCase()} ${url}  error: ${error_text}`, 100);
       }
     });

@@ -12,11 +12,11 @@ const app = require('./app');
 
   try {
     // Получить каналы
-    plugin.channels = await plugin.channels.get();
+    plugin.channels.data = await plugin.channels.get();
     plugin.log('Received channels...');
 
     // Получить параметры
-    plugin.params = await plugin.params.get();
+    plugin.params.data = await plugin.params.get();
     plugin.log('Received params...');
 
     app(plugin);

@@ -9,7 +9,6 @@
     { "prop": "chan", "title": "$Channel", "type": "input" },
     { "prop": "devpropname", "title": "$Devpropname", "type": "input" },
  
-    { "prop": "r", "title": "Чтение", "type": "cb", "hide":"1==1" },
     { "prop": "w", "title": "Запись", "type": "cb", "hide":"1==1" },
     {
       "prop": "parseType",
@@ -125,6 +124,7 @@
       "inAction":1,
       "hide": "!data.p2.w || data.p2.type.id === 'get'  || data.p2.type.id === 'head'"
     },
+    { "prop": "r", "title": "Присвоить отправленное значение", "type": "cb", "hide":"!data.p2.w || data.p2.act != 'set'" },
     { "prop": "updatestate", "title": "$Updatestate", "default": 0, "type": "cb", "hide": "!data.p2.w", "inAction":1 }
    
   ]
