@@ -1,15 +1,25 @@
 {
   "grid": [
-
-    { "id": "p2", "xs": 12, "class": "main", "table": "devhard" }
+    { "id": "p2", "xs": 12, "class": "main", "table": "devhard" },
+    { "id": "p3", "xs": 4, "class": "main", "table": "devhard", "hide": "!data.p2.w" },
+    { "id": "p4", "xs": 8, "class": "main", "table": "devhard", "hide": "!data.p2.w" },
+    {
+      "id": "p5",
+      "xs": 12,
+      "class": "main",
+      "table": "devhard",
+      "height": 250,
+      "hide": "!data.p2.w || data.p3.type.id === 'get'  || data.p3.type.id === 'head'"
+    }
   ],
   "spacing": 4,
 
   "p2": [
     { "prop": "chan", "title": "$Channel", "type": "input" },
     { "prop": "devpropname", "title": "$Devpropname", "type": "input" },
- 
-    { "prop": "w", "title": "Запись", "type": "cb", "hide":"1==1" },
+
+    { "prop": "w", "title": "Запись", "type": "cb", "hide": "1==1" },
+  
     {
       "prop": "parseType",
       "title": "$Parser",
@@ -34,7 +44,7 @@
 
       "type": "input",
       "default": "<div\\b[^>]*>(.*?)</div>",
-     
+
       "hide": "!data.p2.r || data.p2.parseType.id != 'text'"
     },
     {
@@ -72,19 +82,25 @@
       "default": "null",
       "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'search'"
     },
-    { "prop": "number", "title": "$Number", "type": "cb", "hide": "!data.p2.r", "default": 1 },
-    { "prop": "calc", "title": "Формула извлечения значения", "type": "input", "hide":"!data.p2.r"},
 
-   
+    { "prop": "number", "title": "$Number", "type": "cb", "hide": "!data.p2.r", "default": 1 },
+    { "prop": "calc", "title": "Формула извлечения значения", "type": "input", "hide": "!data.p2.r" },
+    {
+      "prop": "r",
+      "title": "Присвоить отправленное значение",
+      "type": "cb",
+      "hide": "!data.p2.w || data.p3.act != 'set'"
+    }
+  ],
+  "p3": [
     { "prop": "act", "title": "Команда", "type": "input", "hide": "!data.p2.w" },
-    { "prop": "url", "title": "$Url", "default": "http://127.0.0.1:8081", "type": "input", "hide": "!data.p2.w", "inAction":1 },
     {
       "prop": "type",
       "title": "$Type",
       "default": 1,
       "type": "droplist",
       "hide": "!data.p2.w",
-      "inAction":1,
+      "inAction": 1,
       "data": [
         { "id": "get", "title": "GET" },
         { "id": "post", "title": "POST" },
@@ -97,35 +113,59 @@
         { "id": "trace", "title": "TRACE" }
       ]
     },
-    { "prop": "statusCode", "title": "$StatusCode", "default": 200, "type": "number", "hide": "!data.p2.w", "inAction":1 },
     {
-      "prop": "headers",
-      "title": "$Headers",
-      "default": "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
-      "type": "textarea",
+      "prop": "statusCode",
+      "title": "$StatusCode",
+      "default": 200,
+      "type": "number",
       "hide": "!data.p2.w",
-      "inAction":1
+      "inAction": 1
     },
-    {
-      "prop": "body",
-      "title": "$Body",
-      "default": "username=admin&password=1234",
-      "type": "textarea",
-
-      "hide": "!data.p2.w || data.p2.type.id === 'get'  || data.p2.type.id === 'head'",
-      "inAction":1
-    },
-    { "prop": "calc_out", "title": "Формула для отправки значения", "type": "input", "hide":"!data.p2.w" },
+   
     {
       "prop": "headerCL",
       "title": "$HeaderCL",
       "default": 0,
       "type": "cb",
-      "inAction":1,
-      "hide": "!data.p2.w || data.p2.type.id === 'get'  || data.p2.type.id === 'head'"
+      "inAction": 1,
+      "hide": "!data.p2.w || data.p3.type.id === 'get'  || data.p3.type.id === 'head'"
     },
-    { "prop": "r", "title": "Присвоить отправленное значение", "type": "cb", "hide":"!data.p2.w || data.p2.act != 'set'" },
-    { "prop": "updatestate", "title": "$Updatestate", "default": 0, "type": "cb", "hide": "!data.p2.w", "inAction":1 }
    
+    { "prop": "updatestate", "title": "$Updatestate", "default": 0, "type": "cb", "hide": "!data.p2.w", "inAction": 1 }
+ 
+
+  ],
+  "p4": [
+    {
+      "prop": "url",
+      "title": "$Url",
+      "default": "http://127.0.0.1:8081",
+      "type": "input",
+      "hide": "!data.p2.w",
+      "inAction": 1
+    },
+    {
+      "prop": "headers",
+      "title": "$Headers",
+      "default": "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\r\nUser-Agent: intraHouse (http-plugin)",
+      "type": "textarea",
+      "height": 200,
+      "hide": "!data.p2.w",
+      "inAction": 1
+    },
+
+    { "prop": "calc_out", "title": "Формула для отправки значения", "type": "input", "hide": "!data.p2.w" }
+
+  ],
+  "p5": [
+    {
+      "prop": "body",
+      "title": "$Body",
+      "default": "username=admin&password=1234",
+      "type": "textarea",
+      "height": 200,
+
+      "inAction": 1
+    }
   ]
 }

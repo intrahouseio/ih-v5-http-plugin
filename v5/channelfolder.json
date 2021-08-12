@@ -1,17 +1,37 @@
 {
-  "grid": [{ "id": "p2", "xs": 12, "class": "main", "table": "devhard" }],
+  "grid": [
+    { "id": "p2", "xs": 4, "class": "main", "table": "devhard" },
+    { "id": "p3", "xs": 8, "class": "main", "table": "devhard" },
+    {
+      "id": "p4",
+      "xs": 12,
+      "class": "main",
+      "table": "devhard",
+      "height": 250,
+      "hide": "!data.p2.type.id || data.p2.type.id === 'get' || data.p2.type.id === 'head'"
+    },
+    { "id": "p5", "xs": 4, "class": "main", "table": "devhard", "hide": "!data.p2.reqAuth" },
+    { "id": "p6", "xs": 8, "class": "main", "table": "devhard", "hide": "!data.p2.reqAuth" },
+    {
+      "id": "p7",
+      "xs": 12,
+      "class": "main",
+      "table": "devhard",
+      "height": 250,
+      "hide": "!data.p2.reqAuth || !data.p5.reqAuthType.id || data.p5.reqAuthType.id === 'get' || data.p5.reqAuthType.id === 'head'"
+    }
+  ],
   "spacing": 4,
 
   "p2": [
-    { "prop": "chan", "title": "$Name", "type": "input"},
-    { "prop": "txt", "title": "$Comment", "type": "input" },
-    { "prop": "r", "title": "", "type": "cb", "hide":"1==1" },
-    { "prop": "url", "title": "$Url", "type": "input", "hide":"!data.p2.r"},
+    { "prop": "chan", "title": "$Name", "type": "input" },
+    { "prop": "r", "title": "", "type": "cb", "hide": "1==1" },
+
     {
       "prop": "type",
       "title": "$Type",
       "type": "droplist",
-      "hide":"!data.p2.r",
+      "hide": "!data.p2.r",
       "data": [
         { "id": "get", "title": "GET" },
         { "id": "post", "title": "POST" },
@@ -24,31 +44,33 @@
         { "id": "trace", "title": "TRACE" }
       ]
     },
-    { "prop": "interval", "title": "$Interval", "type": "number", "hide":"!data.p2.r" },
-    { "prop": "statusCode", "title": "$StatusCode",   "type": "number", "hide":"!data.p2.r" },
+    { "prop": "interval", "title": "$Interval", "type": "number", "hide": "!data.p2.r" },
+    { "prop": "statusCode", "title": "$StatusCode", "type": "number", "hide": "!data.p2.r" },
+
+    { "prop": "reqAuth", "title": "$ReqAuthtext", "type": "cb", "hide": "!data.p2.r" }
+  ],
+  "p3": [
+    { "prop": "url", "title": "$Url", "type": "input", "hide": "!data.p2.r" },
+    { "prop": "txt", "title": "$Comment", "type": "input" },
     {
       "prop": "headers",
       "title": "$Headers",
       "type": "textarea",
-      "hide":"!data.p2.r"
-    },
+      "hide": "!data.p2.r"
+    }
+  ],
+  "p4": [
     {
       "prop": "body",
       "title": "$Body",
       "type": "textarea",
       "hide": "!data.p2.type.id || data.p2.type.id === 'get' || data.p2.type.id === 'head'"
-    },
-
-    { "prop": "reqAuth", "title": "$ReqAuthtext", "type": "cb",   "hide": "!data.p2.r" },
-    {
-      "prop": "reqAuthUrl",
-      "title": "$Url",
-      "type": "input",
-      "hide": "!data.p2.reqAuth"
-    },
+    }
+  ],
+  "p5": [
     {
       "prop": "reqAuthType",
-      "title": "$Type",
+      "title": "Тип запроса авторизации",
       "type": "droplist",
       "hide": "!data.p2.reqAuth",
       "data": [
@@ -63,24 +85,34 @@
         { "id": "trace", "title": "TRACE" }
       ]
     },
-    { "prop": "reqAuthStatusCode", "title": "$StatusCode",  "type": "number", "hide": "!data.p2.reqAuth" },
-    {
-      "prop": "reqAuthHeaders",
-      "title": "$Headers",
-      "type": "textarea",
-      "hide": "!data.p2.reqAuthh"
-    },
-    {
-      "prop": "reqAuthBody",
-      "title": "$Body",
-      "hide": "!data.p2.reqAuth || !data.p2.reqAuthType.id || data.p2.reqAuthType.id === 'get' || data.p2.reqAuthType.id === 'head'",
-      "type": "textarea"
-    },
+    { "prop": "reqAuthStatusCode", "title": "$StatusCode", "type": "number", "hide": "!data.p2.reqAuth" },
+
     {
       "prop": "reqAuthEverytime",
       "title": "$ReqAuthEverytime",
       "type": "cb",
       "hide": "!data.p2.reqAuth"
+    }
+  ],
+  "p6": [
+    {
+      "prop": "reqAuthUrl",
+      "title": "$Url",
+      "type": "input",
+      "hide": "!data.p2.reqAuth"
+    },
+    {
+      "prop": "reqAuthHeaders",
+      "title": "$Headers",
+      "type": "textarea",
+      "hide": "!data.p2.reqAuth"
+    }
+  ],
+  "p7": [
+    {
+      "prop": "reqAuthBody",
+      "title": "$Body",
+      "type": "textarea"
     }
   ]
 }
