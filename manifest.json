@@ -50,7 +50,7 @@
     "regexp": "<div\\b[^>]*>(.*?)</div>",
     "regexptest": "[a-z0-9]",
     "valueTrue": "1",
-    "valueFalse": "null",
+    "valueFalse": "0",
     "flag": "gm",
     "rescount": 1,
     "number": true
