@@ -59,28 +59,28 @@
       "title": "$Flag",
       "type": "input",
       "default": "gm",
-      "hide": "!data.p2.r || data.p2.parseType.id == '-' || (data.p2.parseType !== 'text' && data.p2.parseType !== 'search') || data.p2.regexp == ''"
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || (data.p2.parseType.id !== 'text' && data.p2.parseType.id !== 'search') || data.p2.regexp == ''"
     },
     {
       "prop": "rescount",
       "title": "$Rescount",
       "type": "number",
       "default": 1,
-      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'text'|| data.p2.regexp === ''"
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType.id !== 'text'|| data.p2.regexp === ''"
     },
     {
       "prop": "valueTrue",
       "title": "$ValueTrue",
       "type": "input",
       "default": "1",
-      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'search'"
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType.id !== 'search'"
     },
     {
       "prop": "valueFalse",
       "title": "$ValueFalse",
       "type": "input",
       "default": "null",
-      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType !== 'search'"
+      "hide": "!data.p2.r || data.p2.parseType.id == '-' || data.p2.parseType.id !== 'search'"
     },
 
     { "prop": "number", "title": "$Number", "type": "cb", "hide": "!data.p2.r", "default": 1 },
