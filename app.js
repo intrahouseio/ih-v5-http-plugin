@@ -201,16 +201,16 @@ module.exports = async function(plugin) {
   function parserJSON(text, item, url) {
     try {
       if (typeof item.parse !== 'function') {
-        return { dn: item.dn, err: item.parse };
+        return { dn: item.dn, err: item.parse, chstatus: 1 };
       }
       const data = JSON.parse(text);
       const value = item.number ? Number(item.parse(data)) : item.parse(data);
       if (item.number && isNaN(value)) {
-        return { dn: item.dn, err: 'Value is NaN!' };
+        return { dn: item.dn, err: 'Value is NaN!', chstatus: 1 };
       }
-      return { dn: item.dn, value };
+      return { dn: item.dn, value, chstatus: 0 };
     } catch (e) {
-      return { dn: item.dn, err: e.message };
+      return { dn: item.dn, err: e.message, chstatus: 1 };
     }
   }
 
@@ -219,9 +219,9 @@ module.exports = async function(plugin) {
       if (item.parse === null) {
         const value = item.number ? Number(text) : text;
         if (item.number && isNaN(value)) {
-          return { dn: item.dn, err: 'Value is NaN!' };
+          return { dn: item.dn, err: 'Value is NaN!', chstatus: 1 };
         }
-        return { dn: item.dn, value };
+        return { dn: item.dn, value, chstatus: 0 };
       }
       const regex = item.parse;
       const values = regex.exec(text);
@@ -229,11 +229,11 @@ module.exports = async function(plugin) {
       const value = item.number ? Number(values[item.rescount]) : values[item.rescount];
       regex.exec('');
       if (item.number && isNaN(value)) {
-        return { dn: item.dn, err: 'Value is NaN!' };
+        return { dn: item.dn, err: 'Value is NaN!', chstatus: 1 };
       }
-      return { dn: item.dn, value };
+      return { dn: item.dn, value, chstatus: 0 };
     } catch (e) {
-      return { dn: item.dn, err: e.message };
+      return { dn: item.dn, err: e.message, chstatus: 1 };
     }
   }
 
@@ -244,14 +244,14 @@ module.exports = async function(plugin) {
       regex.test('');
       plugin.log(`${url} --> value: ${test}`, 1);
       if (test) {
-        return { dn: item.dn, value: item.number ? Number(item.valueTrue) : item.valueTrue };
+        return { dn: item.dn, value: item.number ? Number(item.valueTrue) : item.valueTrue, chstatus: 0 };
       }
       if (item.valueFalse !== 'null') {
-        return { dn: item.dn, value: item.number ? Number(item.valueFalse) : item.valueFalse };
+        return { dn: item.dn, value: item.number ? Number(item.valueFalse) : item.valueFalse, chstatus: 0 };
       }
       return { dn: null };
     } catch (e) {
-      return { dn: item.dn, err: e.message };
+      return { dn: item.dn, err: e.message, chstatus: 1 };
     }
   }
 
@@ -266,7 +266,7 @@ module.exports = async function(plugin) {
             }
           })
       )
-      .catch(e => plugin.sendData(this.values.filter(item => item.r).map(item => ({ dn: item.dn, err: e.message }))));
+      .catch(e => plugin.sendData(this.values.filter(item => item.r).map(item => ({ dn: item.dn, chstatus: 1, err: e.message }))));
   }
 
   function worker(item) {
@@ -327,8 +327,6 @@ module.exports = async function(plugin) {
       req(Object.assign({}, action, { url, body }))
         .then(res => {
           if (action.updatestate) {
-            task.bind(STORE.tasks[action.task]).call();
-          } else if (device.prop === 'set') {
             plugin.sendData([{ dn: device.dn, value: device.val }]);
           }
         })

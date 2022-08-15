@@ -2,6 +2,7 @@
   "description": "HTTP plugin",
   "smart": 1,
   "restartOnChannelsChange": 1,
+  "linkChstatus":1,
  
   "channel_popup": {
     "add":[
